@@ -9,20 +9,34 @@ public static class CategoriesEndpoints
     {
         app.MapGet("/categories",  (AppDbContext db) =>
         {
-            if (db.Categories is null)
-                return Results.NotFound();
+            try
+            {
+                if (db.Categories is null)
+                    return Results.NotFound();
             
-            var categories = db.Categories.ToList();
-            return Results.Ok(categories);
+                var categories = db.Categories.ToList();
+                return Results.Ok(categories);
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(e.Message);
+            }
         });
         
         app.MapPost("/categories", async (AppDbContext db, Category category) =>
         {
-            if (db.Categories != null) 
-                await db.Categories.AddAsync(category);
+            try
+            {
+                if (db.Categories != null) 
+                    await db.Categories.AddAsync(category);
             
-            await db.SaveChangesAsync();
-            return Results.Created($"/categories/{category.CategoryId}", category);
+                await db.SaveChangesAsync();
+                return Results.Created($"/categories/{category.CategoryId}", category);
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(e.Message);
+            }
         });
 
     }
