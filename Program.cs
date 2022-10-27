@@ -1,5 +1,6 @@
 using ApiCatalog.Context;
 using ApiCatalog.Endpoints.Categories;
+using ApiCatalog.Endpoints.Products;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,5 +24,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapCategoriesEndpoints();
+app.MapProductsEndpoints();
 
 app.Run();
