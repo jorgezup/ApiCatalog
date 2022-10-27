@@ -16,6 +16,8 @@ public static class CategoriesEndpoints
                     return Results.NotFound();
             
                 var categories = db.Categories.ToList();
+                var categoriesResponse = categories.Select(c 
+                    => new CategoryResponse(c.CategoryId, c.Name!, c.Description!));
                 return Results.Ok(categories);
             }
             catch (Exception e)
@@ -37,6 +39,28 @@ public static class CategoriesEndpoints
                 await db.SaveChangesAsync();
                 
                 return Results.Created($"/categories/{category.CategoryId}", category);
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(e.Message);
+            }
+        });
+        
+        app.MapGet("/categories/{id:Guid}", (AppDbContext db, Guid id) =>
+        {
+            try
+            {
+                if (db.Categories is null)
+                    return Results.NotFound();
+                
+                var category = db.Categories.FirstOrDefault(c => c.CategoryId == id);
+                
+                if (category is null)
+                    return Results.NotFound();
+                
+                var categoryResponse = new CategoryResponse(category.CategoryId, category.Name!, category.Description!);
+                
+                return Results.Ok(categoryResponse);
             }
             catch (Exception e)
             {
