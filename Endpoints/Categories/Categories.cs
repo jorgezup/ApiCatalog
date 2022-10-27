@@ -1,10 +1,9 @@
 using ApiCatalog.Context;
-using ApiCatalog.Endpoints.Categories;
 using ApiCatalog.Models;
 
-namespace ApiCatalog.EndPoints;
+namespace ApiCatalog.Endpoints.Categories;
 
-public static class CategoriesEndpoints
+public static class Categories
 {
     public static void MapCategoriesEndpoints(this WebApplication app)
     {
@@ -18,7 +17,7 @@ public static class CategoriesEndpoints
                 var categories = db.Categories.ToList();
                 var categoriesResponse = categories.Select(c 
                     => new CategoryResponse(c.CategoryId, c.Name!, c.Description!));
-                return Results.Ok(categories);
+                return Results.Ok(categoriesResponse);
             }
             catch (Exception e)
             {
