@@ -1,5 +1,5 @@
 using ApiCatalog.Context;
-using ApiCatalog.EndPoints;
+using ApiCatalog.Endpoints.Categories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
