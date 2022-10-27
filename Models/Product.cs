@@ -13,4 +13,18 @@ public class Product
     
     public Guid CategoryId { get; set; } // FK
     public Category? Category { get; set; } // Navigation property
+
+    public Product(string name, string description, decimal price, string image, Guid categoryId)
+    {
+        ProductId = Guid.NewGuid();
+        Name = name;
+        Description = description;
+        Price = price;
+        Image = image;
+        Created = DateTime.Now;
+        LastUpdated = DateTime.Now;
+        Stock = 0;
+        CategoryId = categoryId;
+    }
+
 }
