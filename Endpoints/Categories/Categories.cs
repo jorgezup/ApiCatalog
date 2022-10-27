@@ -23,7 +23,8 @@ public static class Categories
             {
                 return Results.BadRequest(e.Message);
             }
-        });
+        }).WithTags("Categories") // Add a tag to the endpoint
+            .Produces<Category>(); // Add a response type to the endpoint
         
         app.MapPost("/categories", async (AppDbContext db, CategoryRequest  categoryRequest) =>
         {
@@ -43,7 +44,8 @@ public static class Categories
             {
                 return Results.BadRequest(e.Message);
             }
-        });
+        }).WithTags("Categories")
+            .Produces<Category>();
         
         app.MapGet("/categories/{id:Guid}", (AppDbContext db, Guid id) =>
         {
@@ -65,7 +67,8 @@ public static class Categories
             {
                 return Results.BadRequest(e.Message);
             }
-        });
+        }).WithTags("Categories")
+            .Produces<Category>();
         
         app.MapPut("/categories/{id:Guid}", async (AppDbContext db, Guid id, CategoryRequest categoryRequest) =>
         {
@@ -91,7 +94,8 @@ public static class Categories
             {
                 return Results.BadRequest(e.Message);
             }
-        });
+        }).WithTags("Categories")
+            .Produces<Category>();
         
         app.MapDelete("/categories/{id:Guid}", async (AppDbContext db, Guid id) =>
         {
@@ -114,7 +118,7 @@ public static class Categories
             {
                 return Results.BadRequest(e.Message);
             }
-        });
+        }).WithTags("Categories");
 
     }
 }
