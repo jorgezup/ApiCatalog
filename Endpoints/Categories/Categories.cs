@@ -67,6 +67,55 @@ public static class CategoriesEndpoints
                 return Results.BadRequest(e.Message);
             }
         });
+        
+        app.MapPut("/categories/{id:Guid}", async (AppDbContext db, Guid id, CategoryRequest categoryRequest) =>
+        {
+            try
+            {
+                if (db.Categories is null)
+                    return Results.NotFound();
+                
+                var category = db.Categories.FirstOrDefault(c => c.CategoryId == id);
+                
+                if (category is null)
+                    return Results.NotFound();
+                
+                category.Name = categoryRequest.Name;
+                category.Description = categoryRequest.Description;
+                
+                db.Categories.Update(category);
+                await db.SaveChangesAsync();
+                
+                return Results.Ok(category);
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(e.Message);
+            }
+        });
+        
+        app.MapDelete("/categories/{id:Guid}", async (AppDbContext db, Guid id) =>
+        {
+            try
+            {
+                if (db.Categories is null)
+                    return Results.NotFound();
+                
+                var category = db.Categories.FirstOrDefault(c => c.CategoryId == id);
+                
+                if (category is null)
+                    return Results.NotFound();
+                
+                db.Categories.Remove(category);
+                await db.SaveChangesAsync();
+                
+                return Results.NoContent();
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest(e.Message);
+            }
+        });
 
     }
 }
