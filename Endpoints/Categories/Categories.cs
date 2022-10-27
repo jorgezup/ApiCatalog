@@ -1,4 +1,5 @@
 using ApiCatalog.Context;
+using ApiCatalog.Endpoints.Categories;
 using ApiCatalog.Models;
 
 namespace ApiCatalog.EndPoints;
@@ -23,14 +24,18 @@ public static class CategoriesEndpoints
             }
         });
         
-        app.MapPost("/categories", async (AppDbContext db, Category category) =>
+        app.MapPost("/categories", async (AppDbContext db, CategoryRequest  categoryRequest) =>
         {
             try
             {
-                if (db.Categories != null) 
-                    await db.Categories.AddAsync(category);
-            
+                var category = new Category(categoryRequest.Name, categoryRequest.Description);
+                
+                if (db.Categories is null)
+                    return Results.NotFound();
+                
+                await db.Categories.AddAsync(category);
                 await db.SaveChangesAsync();
+                
                 return Results.Created($"/categories/{category.CategoryId}", category);
             }
             catch (Exception e)
