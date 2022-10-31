@@ -1,6 +1,7 @@
 using ApiCatalog.Context;
 using ApiCatalog.Endpoints.Categories;
 using ApiCatalog.Endpoints.Products;
+using ApiCatalog.Middleware;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.MapCategoriesEndpoints();
 app.MapProductsEndpoints();
 
