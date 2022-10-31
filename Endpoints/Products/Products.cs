@@ -1,5 +1,6 @@
 using ApiCatalog.Context;
 using ApiCatalog.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiCatalog.Endpoints.Products;
 
@@ -110,6 +111,28 @@ public static class Products
                 db.Products.Remove(product);
                 await db.SaveChangesAsync();
                 return Results.Ok(product);
+            }
+            catch (Exception e)
+            {   
+                return Results.BadRequest(e.Message);
+            }
+        }).WithTags("Products")
+            .Produces<Product>();
+        
+        app.MapGet("/products/categories/{id:Guid}", (AppDbContext db, Guid id) =>
+        {
+            try
+            {
+                if (db.Products is null)
+                    return Results.NotFound();
+
+                var products = db.Products
+                    .Include(p => p.Category)
+                    .Where(p => p.ProductId == id).ToList();
+                if (products is null)
+                    return Results.NotFound();
+
+                return Results.Ok(products);
             }
             catch (Exception e)
             {
