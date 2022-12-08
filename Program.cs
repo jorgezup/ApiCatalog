@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHealthChecks();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -18,11 +19,17 @@ builder.Services.AddDbContext<AppDbContext>(options =>  // Add the database cont
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// if (app.Environment.IsDevelopment())
+// {
+//     app.UseSwagger();
+//     app.UseSwaggerUI();
+// }
+
+app.MapHealthChecks("/health");
+app.MapGet("/", () => "Seja muito bem-vindo");
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.MapCategoriesEndpoints();
