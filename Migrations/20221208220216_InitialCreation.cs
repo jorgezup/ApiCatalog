@@ -9,41 +9,32 @@ namespace ApiCatalog.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterDatabase()
-                .Annotation("MySql:CharSet", "utf8mb4");
-
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
                 {
-                    CategoryId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.CategoryId);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
-                    ProductId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    Image = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    LastUpdated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Stock = table.Column<int>(type: "int", nullable: false),
-                    CategoryId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,8 +45,7 @@ namespace ApiCatalog.Migrations
                         principalTable: "Categories",
                         principalColumn: "CategoryId",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",

@@ -3,6 +3,7 @@ using System;
 using ApiCatalog.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -11,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiCatalog.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221027194049_InitialCreation")]
+    [Migration("20221208220216_InitialCreation")]
     partial class InitialCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,23 +20,25 @@ namespace ApiCatalog.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.10")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("ApiCatalog.Models.Category", b =>
                 {
                     b.Property<Guid>("CategoryId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("CategoryId");
 
@@ -46,30 +49,30 @@ namespace ApiCatalog.Migrations
                 {
                     b.Property<Guid>("ProductId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CategoryId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("Image")
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10,2)");
